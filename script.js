@@ -91,29 +91,37 @@ function draw() {
         dx = -dx
         ballColor = getRandomColor()
     }
-    if(y + dy < ballRadius || y + dy > canvas.height-ballRadius){
+    if(y + dy < ballRadius){
         dy = -dy
         ballColor = getRandomColor()
+    }
+    else if (y + dy > canvas.height-ballRadius){
+        if(x > paddleX && x < paddleX + paddleWidth){
+            dy = -dy
+            ballColor = getRandomColor()
+        }
+        else{
+            alert('Game Over!!')
+            document.location.reload()
+            clearInterval(interval)
+        }
     }
     x += dx
     y += dy
 
     if(rightPressed) {
-        paddleX += 7
+        paddleX += 10
         if (paddleX + paddleWidth > canvas.width){
             paddleX = canvas.width - paddleWidth
         }
     }
     else if(leftPressed) {
-        paddleX -= 7
+        paddleX -= 10
         if (paddleX < 0) {
             paddleX = 0
         }
     }
 }
 
-
-
-
-
-setInterval(draw, 10);
+// myVar = setInterval("javascript function", milliseconds);
+var interval = setInterval(draw, 10);
