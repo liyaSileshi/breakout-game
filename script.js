@@ -6,15 +6,14 @@ let dx = 2;
 let dy = -2;
 const ballRadius = 10;
 let ballColor = '#0095DD';
-// let brickColor = 'blue';
 const paddleHeight = 10;
 const paddleWidth = 75;
 let paddleX = (canvas.width - paddleWidth) / 2; // puts it in the middle??
 let rightPressed = false;
 let leftPressed = false;
 const brickRowCount = 5;
-const brickColumnCount = 7;
-const brickWidth = 75;
+let brickColumnCount = 8;
+let brickWidth = 75;
 const brickHeight = 20;
 const brickPadding = 10;
 const brickOffsetTop = 30;
@@ -28,38 +27,33 @@ for (let c = 0; c < brickColumnCount; c += 1) {
   bricks[c] = [];
   for (let r = 0; r < brickRowCount; r += 1) {
     let color;
-    // if (c === 0) {
-    //   color = 'red';
-    // } else {
-    //   color = 'blue'
-    // }
     switch (c) {
       case 0:
-        color = 'green';
+        color = '#C0392B';
         break;
 
       case 1:
-        color = 'yellow';
+        color = '#E74C3C';
         break;
 
       case 2:
-        color = 'red';
+        color = '#9B59B6';
         break;
 
       case 3:
-        color = 'blue';
+        color = '#8E44AD';
         break;
 
       case 4:
-        color = 'pink';
+        color = '#2980B9';
         break;
 
       case 5:
-        color = 'red';
+        color = '#3498DB';
         break;
 
       default:
-        color = 'green';
+        color = '#17A589';
         break;
     }
 
@@ -122,12 +116,34 @@ function collisionDetection() {
           dy = -dy; // bounce back
           b.status = 0; // hide the brick
           ballColor = getRandomColor();
-          score += 1;
-          if (score === brickRowCount * brickColumnCount) {
+
+          switch (r) {
+            case 0:
+              score += 100000;
+              break;
+
+            case 1:
+              score += 10000;
+              break;
+
+            case 2:
+              score += 1000;
+              break;
+
+            case 3:
+              score += 100;
+              break;
+
+            default:
+              score += 10;
+          }
+
+          // score += 1;
+          if (score === 111110) {
+            // brickRowCount * brickColumnCount
             // eslint-disable-next-line no-alert
             alert('You win, congrats!!');
             document.location.reload();
-            // clearInterval(interval)
           }
         }
       }
@@ -173,30 +189,22 @@ function drawPaddle() {
 
 function drawBricks() {
   for (let c = 0; c < brickColumnCount; c += 1) {
-    brickColor = getRandomColor();
     for (let r = 0; r < brickRowCount; r += 1) {
       if (bricks[c][r].status === 1) {
+        if (r % 2 === 0) {
+          brickWidth = 74;
+        } else {
+          brickWidth = 74 / 2;
+        }
         const brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
         const brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
         bricks[c][r].x = brickX;
         bricks[c][r].y = brickY;
         ctx.beginPath();
         ctx.rect(brickX, brickY, brickWidth, brickHeight);
-        // ctx.fillStyle = '#0095DD';
-        // brickColor = getRandomColor();
-
-
-        // if (c === 0) {
-        //   // color A
-        //   // ctx.fillStyle = '#0095DD';
-        // } else if (c === 1) {
-        //   // color B
-        //   // ctx.fillStyle = '#F0F5DD';
-        // }
         ctx.fillStyle = bricks[c][r].color;
         ctx.fill();
         ctx.closePath();
-        // brickColor = 'yellow';
       }
     }
   }
