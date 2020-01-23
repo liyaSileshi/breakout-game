@@ -6,6 +6,7 @@ let dx = 2;
 let dy = -2;
 const ballRadius = 10;
 let ballColor = '#0095DD';
+// let brickColor = 'blue';
 const paddleHeight = 10;
 const paddleWidth = 75;
 let paddleX = (canvas.width - paddleWidth) / 2; // puts it in the middle??
@@ -26,7 +27,48 @@ const bricks = [];
 for (let c = 0; c < brickColumnCount; c += 1) {
   bricks[c] = [];
   for (let r = 0; r < brickRowCount; r += 1) {
-    bricks[c][r] = { x: 0, y: 0, status: 1 };
+    let color;
+    // if (c === 0) {
+    //   color = 'red';
+    // } else {
+    //   color = 'blue'
+    // }
+    switch (c) {
+      case 0:
+        color = 'green';
+        break;
+
+      case 1:
+        color = 'yellow';
+        break;
+
+      case 2:
+        color = 'red';
+        break;
+
+      case 3:
+        color = 'blue';
+        break;
+
+      case 4:
+        color = 'pink';
+        break;
+
+      case 5:
+        color = 'red';
+        break;
+
+      default:
+        color = 'green';
+        break;
+    }
+
+    bricks[c][r] = {
+      x: 0,
+      y: 0,
+      status: 1,
+      color,
+    };
   }
 }
 
@@ -113,6 +155,14 @@ function drawBall() {
   ctx.closePath();
 }
 
+// function drawBall2() {
+//   ctx.beginPath();
+//   ctx.arc(10 * dx, 30 * dy, ballRadius, 0, Math.PI * 2);
+//   ctx.fillStyle = ballColor;
+//   ctx.fill();
+//   ctx.closePath();
+// }
+
 function drawPaddle() {
   ctx.beginPath();
   ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
@@ -123,6 +173,7 @@ function drawPaddle() {
 
 function drawBricks() {
   for (let c = 0; c < brickColumnCount; c += 1) {
+    brickColor = getRandomColor();
     for (let r = 0; r < brickRowCount; r += 1) {
       if (bricks[c][r].status === 1) {
         const brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
@@ -131,9 +182,21 @@ function drawBricks() {
         bricks[c][r].y = brickY;
         ctx.beginPath();
         ctx.rect(brickX, brickY, brickWidth, brickHeight);
-        ctx.fillStyle = '#0095DD';
+        // ctx.fillStyle = '#0095DD';
+        // brickColor = getRandomColor();
+
+
+        // if (c === 0) {
+        //   // color A
+        //   // ctx.fillStyle = '#0095DD';
+        // } else if (c === 1) {
+        //   // color B
+        //   // ctx.fillStyle = '#F0F5DD';
+        // }
+        ctx.fillStyle = bricks[c][r].color;
         ctx.fill();
         ctx.closePath();
+        // brickColor = 'yellow';
       }
     }
   }
@@ -144,6 +207,7 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // clears the canvas first
   drawBricks();
   drawBall();
+  // drawBall2();
   drawPaddle();
   drawScore();
   drawLives();
