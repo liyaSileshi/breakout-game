@@ -12,7 +12,7 @@ let paddleX = (canvas.width - paddleWidth) / 2; // puts it in the middle??
 let rightPressed = false;
 let leftPressed = false;
 const brickRowCount = 5;
-let brickColumnCount = 8;
+const brickColumnCount = 8;
 let brickWidth = 75;
 const brickHeight = 20;
 const brickPadding = 10;
@@ -210,9 +210,18 @@ function drawBricks() {
   }
 }
 
+function drawBackground() {
+  ctx.beginPath();
+  ctx.rect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#2E4053';
+  ctx.fill();
+  ctx.closePath();
+}
+
 function draw() {
   // drawing code
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // clears the canvas first
+  drawBackground();
+  // ctx.clearRect(0, 0, canvas.width, canvas.height); // clears the canvas first
   drawBricks();
   drawBall();
   // drawBall2();
