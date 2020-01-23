@@ -19,6 +19,7 @@ var brickPadding = 10
 var brickOffsetTop = 30
 var brickOffsetLeft = 30
 var score = 0
+var lives = 3
 
 var bricks = []
 // create new brick objects
@@ -86,7 +87,7 @@ function collisionDetection() {
                     if(score == brickRowCount*brickColumnCount) {
                         alert("You win, congrats!!")
                         document.location.reload()
-                        clearInterval(interval)
+                        // clearInterval(interval)
                     }
                 }
             }
@@ -98,6 +99,12 @@ function drawScore() {
     ctx.font = '16px Arial'
     ctx.fillStyle = '#0095DD'
     ctx.fillText("Score: "+score, 8, 20)
+}
+
+function drawLives() {
+    ctx.font = '16px Arial'
+    ctx.fillStyle = '#0095DD'
+    ctx.fillText("Lives: "+lives, canvas.width-65, 20)
 }
 
 function drawBall() {
@@ -141,6 +148,7 @@ function draw() {
     drawBall()
     drawPaddle()
     drawScore()
+    drawLives()
     collisionDetection()
     if(x + dx < ballRadius || x + dx > canvas.width-ballRadius){
         dx = -dx
@@ -156,9 +164,19 @@ function draw() {
             ballColor = getRandomColor()
         }
         else{
-            alert('Game Over!!')
-            document.location.reload()
-            clearInterval(interval) //needed for chrome to end game
+            lives--;
+            if(!lives) {
+                alert("GAME OVER");
+                document.location.reload();
+                // clearInterval(interval); // Needed for Chrome to end game
+            }
+            else {
+                x = canvas.width/2;
+                y = canvas.height-30;
+                dx = 2;
+                dy = -2;
+                paddleX = (canvas.width-paddleWidth)/2;
+            }
         }
     }
     x += dx
@@ -176,8 +194,12 @@ function draw() {
             paddleX = 0
         }
     }
+    requestAnimationFrame(draw) //causes the draw() function to call
+                                // itself over and over again
 }
 
 
 // myVar = setInterval("javascript function", milliseconds);
-var interval = setInterval(draw, 10);
+// var interval = setInterval(draw, 10);
+draw()
+
