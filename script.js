@@ -11,6 +11,23 @@ var paddleWidth = 75
 var paddleX = (canvas.width-paddleWidth)/2 //puts it in the middle??
 var rightPressed = false
 var leftPressed = false
+var brickRowCount = 5
+var brickColumnCount = 7
+var brickWidth = 75
+var brickHeight = 20
+var brickPadding = 10
+var brickOffsetTop = 30
+var brickOffsetLeft = 30
+var bricks = []
+
+// create new brick objects
+for (var c=0; c<brickColumnCount; c++){
+    bricks[c] = []
+    for(var r=0; r<brickRowCount; r++){
+        bricks[c][r] = { x: 0, y: 0}
+    }
+}
+
 
 document.addEventListener('keydown', keyDownHandler, false)
 document.addEventListener('keyup', keyUpHandler, false)
@@ -32,26 +49,6 @@ function keyUpHandler(e) {
         leftPressed = false
     }
 }
-
-// draw a rectangle
-// ctx.beginPath()    //begins a new path
-// // ctx.rect(x,y,width,height)
-// ctx.rect(100,50,120,56)         //draws a rectangular path
-// ctx.fillStyle='#0095DD'         //sets the fill color
-// ctx.closePath()                 //close the path
-// ctx.fill()                      //fills the current path
-
-// ctx.beginPath()
-// ctx.rect(300,300,120,56)
-// ctx.fillStyle='#0095DD'  
-// ctx.closePath()                
-// ctx.fill()                      
-
-// ctx.beginPath();
-// ctx.arc(240, 160, 20, 0, Math.PI*2, false);
-// ctx.fillStyle = "green";
-// ctx.fill();
-// ctx.closePath();
 
 //     Responsive canvase formula
 // 1, listen for changes in window size
@@ -82,9 +79,26 @@ function drawPaddle() {
     ctx.closePath()
 }
 
+function drawBricks() {
+    for(var c=0; c<brickColumnCount; c++) {
+        for(var r=0; r<brickRowCount; r++) {
+            var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+            var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+            bricks[c][r].x = brickX;
+            bricks[c][r].y = brickY;
+            ctx.beginPath();
+            ctx.rect(brickX, brickY, brickWidth, brickHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+        }
+    }
+}
+
 function draw() {
     // drawing code
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clears the canvas first
+    drawBricks()
     drawBall()
     drawPaddle()
     if(x + dx < ballRadius || x + dx > canvas.width-ballRadius){
@@ -103,7 +117,7 @@ function draw() {
         else{
             alert('Game Over!!')
             document.location.reload()
-            clearInterval(interval)
+            clearInterval(interval) //needed for chrome to end game
         }
     }
     x += dx
