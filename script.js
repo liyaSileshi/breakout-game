@@ -1,11 +1,14 @@
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
-let x = canvas.width / 2;
-let y = canvas.height - 30;
-let dx = 2;
-let dy = -2;
-const ballRadius = 10;
-let ballColor = '#0095DD';
+
+// let x = canvas.width / 2;
+// let y = canvas.height - 30;
+// let dx = 2;
+// let dy = -2;
+// const ballRadius = 10;
+// let ballColor = '#0095DD';
+
+
 const paddleHeight = 10;
 const paddleWidth = 75;
 let paddleX = (canvas.width - paddleWidth) / 2; // puts it in the middle??
@@ -20,6 +23,19 @@ const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
 let score = 0;
 let lives = 3;
+
+let ball = {
+  x: canvas.width / 2,
+  y: canvas.height - 30,
+  dx: 2,
+  dy: -2,
+  radius: 10,
+  color: 'red',
+  move() {
+    this.x += this.dx;
+    this.y += this.dy;
+  },
+};
 
 const bricks = [];
 // create new brick objects
@@ -112,10 +128,10 @@ function collisionDetection() {
     for (let r = 0; r < brickRowCount; r += 1) {
       const b = bricks[c][r];
       if (b.status === 1) {
-        if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
-          dy = -dy; // bounce back
+        if (ball.x > b.x && ball.x < b.x + brickWidth && ball.y > b.y && ball.y < b.y + brickHeight) {
+          ball.dy = -ball.dy; // bounce back
           b.status = 0; // hide the brick
-          ballColor = getRandomColor();
+          ball.color = getRandomColor();
 
           switch (r) {
             case 0:
@@ -165,8 +181,8 @@ function drawLives() {
 
 function drawBall() {
   ctx.beginPath();
-  ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-  ctx.fillStyle = ballColor;
+  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+  ctx.fillStyle = ball.color;
   ctx.fill();
   ctx.closePath();
 }
@@ -229,17 +245,18 @@ function draw() {
   drawScore();
   drawLives();
   collisionDetection();
-  if (x + dx < ballRadius || x + dx > canvas.width - ballRadius) {
-    dx = -dx;
-    ballColor = getRandomColor();
+  if (ball.x + ball.dx < ball.radius || ball.x + ball.dx > canvas.width - ball.radius) {
+    ball.dx = -ball.dx;
+    // ball.move();
+    ball.color = getRandomColor();
   }
-  if (y + dy < ballRadius) {
-    dy = -dy;
-    ballColor = getRandomColor();
-  } else if (y + dy > canvas.height - ballRadius) {
-    if (x > paddleX && x < paddleX + paddleWidth) {
-      dy = -dy;
-      ballColor = getRandomColor();
+  if (ball.y + ball.dy < ball.radius) {
+    ball.dy = -ball.dy;
+    ball.color = getRandomColor();
+  } else if (ball.y + ball.dy > canvas.height - ball.radius) {
+    if (ball.x > paddleX && ball.x < paddleX + paddleWidth) {
+      ball.dy = -ball.dy;
+      ball.color = getRandomColor();
     } else {
       lives -= 1;
       if (!lives) {
@@ -248,16 +265,17 @@ function draw() {
         document.location.reload();
         // clearInterval(interval); // Needed for Chrome to end game
       } else {
-        x = canvas.width / 2;
-        y = canvas.height - 30;
-        dx = 2;
-        dy = -2;
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height - 30;
+        ball.dx = 2;
+        ball.dy = -2;
         paddleX = (canvas.width - paddleWidth) / 2;
       }
     }
   }
-  x += dx;
-  y += dy;
+  // ball.x += ball.dx;
+  // ball.y += ball.dy;
+  ball.move();
   if (rightPressed) {
     paddleX += 10;
     if (paddleX + paddleWidth > canvas.width) {
