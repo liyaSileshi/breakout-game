@@ -24,7 +24,7 @@ const brickOffsetLeft = 30;
 let score = 0;
 let lives = 3;
 
-let ball = {
+const ball = {
   x: canvas.width / 2,
   y: canvas.height - 30,
   dx: 2,
