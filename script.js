@@ -1,15 +1,6 @@
 /* eslint-disable no-shadow */
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
-
-// let x = canvas.width / 2;
-// let y = canvas.height - 30;
-// let dx = 2;
-// let dy = -2;
-// const ballRadius = 10;
-// let ballColor = '#0095DD';
-
-
 const paddleHeight = 10;
 const paddleWidth = 75;
 let paddleX = (canvas.width - paddleWidth) / 2; // puts it in the middle??
@@ -24,19 +15,6 @@ const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
 let score = 0;
 let lives = 3;
-
-// const ball = {
-//   x: canvas.width / 2,
-//   y: canvas.height - 30,
-//   dx: 2,
-//   dy: -2,
-//   radius: 10,
-//   color: 'red',
-//   move() {
-//     this.x += this.dx;
-//     this.y += this.dy;
-//   },
-// };
 
 class Ball {
   constructor(x, y, radius = 10, color = '#0095DD') {
@@ -206,22 +184,6 @@ function drawLives() {
   ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
 }
 
-function drawBall() {
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-  ctx.fillStyle = ball.color;
-  ctx.fill();
-  ctx.closePath();
-}
-
-// function drawBall2() {
-//   ctx.beginPath();
-//   ctx.arc(10 * dx, 30 * dy, ballRadius, 0, Math.PI * 2);
-//   ctx.fillStyle = ballColor;
-//   ctx.fill();
-//   ctx.closePath();
-// }
-
 function drawPaddle() {
   ctx.beginPath();
   ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
@@ -266,8 +228,7 @@ function draw() {
   drawBackground();
   // ctx.clearRect(0, 0, canvas.width, canvas.height); // clears the canvas first
   drawBricks();
-  drawBall();
-  // drawBall2();
+  ball.render(ctx);
   drawPaddle();
   drawScore();
   drawLives();
