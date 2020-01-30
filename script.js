@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -24,18 +25,43 @@ const brickOffsetLeft = 30;
 let score = 0;
 let lives = 3;
 
-const ball = {
-  x: canvas.width / 2,
-  y: canvas.height - 30,
-  dx: 2,
-  dy: -2,
-  radius: 10,
-  color: 'red',
+// const ball = {
+//   x: canvas.width / 2,
+//   y: canvas.height - 30,
+//   dx: 2,
+//   dy: -2,
+//   radius: 10,
+//   color: 'red',
+//   move() {
+//     this.x += this.dx;
+//     this.y += this.dy;
+//   },
+// };
+
+class Ball {
+  constructor(x, y, radius = 10, color = '#0095DD') {
+    this.radius = radius;
+    this.color = color;
+    this.x = x;
+    this.y = y;
+    this.dx = 2;
+    this.dy = -2;
+  }
+
   move() {
     this.x += this.dx;
     this.y += this.dy;
-  },
-};
+  }
+
+  render(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.closePath();
+  }
+}
+
 
 const bricks = [];
 // create new brick objects
@@ -122,6 +148,7 @@ function getRandomColor() {
   }
   return color;
 }
+const ball = new Ball(canvas.width / 2, canvas.height - 30);
 
 function collisionDetection() {
   for (let c = 0; c < brickColumnCount; c += 1) {
