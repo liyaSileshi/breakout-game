@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 /* eslint-disable no-shadow */
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
@@ -40,6 +41,24 @@ class Ball {
   }
 }
 
+class Brick {
+  constructor(x, y, w = 74, h = 20, color = 'blue') {
+    this.x = x;
+    this.y = y;
+    this.status = 1;
+    this.color = color;
+    this.width = w;
+    this.height = h;
+  }
+
+  render(ctx) {
+    ctx.beginPath();
+    ctx.rect(this.x, this.y, this.width, this.height);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.closePath();
+  }
+}
 
 const bricks = [];
 // create new brick objects
@@ -77,12 +96,22 @@ for (let c = 0; c < brickColumnCount; c += 1) {
         break;
     }
 
-    bricks[c][r] = {
-      x: 0,
-      y: 0,
-      status: 1,
-      color,
-    };
+    if (r % 2 === 0) {
+      brickWidth = 74;
+    } else {
+      brickWidth = 74 / 2;
+    }
+    const brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+    const brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+
+    bricks[c][r] = new Brick(brickX, brickY, brickWidth, brickHeight, color);
+    // bricks[c][r] = {
+
+    //   x: 0,
+    //   y: 0,
+    //   status: 1,
+    //   color,
+    // };
   }
 }
 
@@ -196,20 +225,25 @@ function drawBricks() {
   for (let c = 0; c < brickColumnCount; c += 1) {
     for (let r = 0; r < brickRowCount; r += 1) {
       if (bricks[c][r].status === 1) {
-        if (r % 2 === 0) {
-          brickWidth = 74;
-        } else {
-          brickWidth = 74 / 2;
-        }
-        const brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
-        const brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
-        bricks[c][r].x = brickX;
-        bricks[c][r].y = brickY;
-        ctx.beginPath();
-        ctx.rect(brickX, brickY, brickWidth, brickHeight);
-        ctx.fillStyle = bricks[c][r].color;
-        ctx.fill();
-        ctx.closePath();
+
+        // if (r % 2 === 0) {
+        //   brickWidth = 74;
+        // } else {
+        //   brickWidth = 74 / 2;
+        // }
+        // const brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+        // const brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+        // bricks[c][r].x = brickX;
+        // bricks[c][r].y = brickY;
+
+        bricks[c][r].render(ctx)
+
+        // ctx.beginPath();
+        // ctx.rect(brickX, brickY, brickWidth, brickHeight);
+        // ctx.fillStyle = bricks[c][r].color;
+        // ctx.fill();
+        // ctx.closePath();
+
       }
     }
   }
