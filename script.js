@@ -13,7 +13,7 @@ const brickPadding = 10;
 const brickOffsetTop = 30;
 const brickOffsetLeft = 30;
 // let score = 0;
-let lives = 3;
+// let lives = 3;
 
 class Ball {
   constructor(x, y, radius = 10, color = '#0095DD') {
@@ -100,9 +100,9 @@ class Score {
   }
 
   render(ctx) {
-    ctx.font = this.font; //'16px Arial'
-    ctx.fillStyle = this.color; //'#0095DD'
-    ctx.fillText(`Score: ${this.score}`, this.x, this.y); //x=8, y=20
+    ctx.font = this.font;
+    ctx.fillStyle = this.color;
+    ctx.fillText(`Score: ${this.score}`, this.x, this.y);
   }
 
   update(points) {
@@ -114,6 +114,31 @@ class Score {
   }
 }
 
+class Lives {
+  constructor(x, y, color, font) {
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.font = font;
+    this.lives = 3;
+  }
+
+  render(ctx) {
+    ctx.font = this.font;
+    ctx.fillStyle = this.color;
+    ctx.fillText(`Lives: ${this.lives}`, this.x, this.y);
+  }
+
+  loseLife() {
+    this.lives -= 1;
+  }
+
+  reset() {
+    this.lives = 3;
+  }
+}
+
+const lives = new Lives(canvas.width - 65, 20, '#0095DD', '16px Arial');
 const score = new Score(8, 20, '#0095DD', '16px Arial');
 const background = new Background();
 const paddle = new Paddle((canvas.width - 75) / 2, canvas.height - 10);
@@ -219,31 +244,25 @@ function collisionDetection() {
 
           switch (r) {
             case 0:
-              // score += 100000;
               score.update(100000);
               break;
 
             case 1:
-              // score += 10000;
               score.update(10000);
               break;
 
             case 2:
-              // score += 1000;
               score.update(1000);
               break;
 
             case 3:
-              // score += 100;
               score.update(100);
               break;
 
             default:
-              // score += 10;
               score.update(10);
           }
 
-          // score += 1;
           if (score.score === 111110) {
             // brickRowCount * brickColumnCount
             // eslint-disable-next-line no-alert
@@ -254,18 +273,6 @@ function collisionDetection() {
       }
     }
   }
-}
-
-// function drawScore() {
-//   ctx.font = '16px Arial';
-//   ctx.fillStyle = '#0095DD';
-//   ctx.fillText(`Score: ${score}`, 8, 20);
-// }
-
-function drawLives() {
-  ctx.font = '16px Arial';
-  ctx.fillStyle = '#0095DD';
-  ctx.fillText(`Lives: ${lives}`, canvas.width - 65, 20);
 }
 
 function drawBricks() {
@@ -285,9 +292,8 @@ function draw() {
   drawBricks();
   ball.render(ctx);
   paddle.render(ctx);
-  // drawScore();
   score.render(ctx);
-  drawLives();
+  lives.render(ctx);
   collisionDetection();
   if (ball.x + ball.dx < ball.radius || ball.x + ball.dx > canvas.width - ball.radius) {
     ball.dx = -ball.dx;
@@ -302,8 +308,8 @@ function draw() {
       ball.dy = -ball.dy;
       ball.color = getRandomColor();
     } else {
-      lives -= 1;
-      if (!lives) {
+      lives.loseLife();
+      if (lives.lives < 1) {
         // eslint-disable-next-line no-alert
         alert('GAME OVER');
         document.location.reload();
