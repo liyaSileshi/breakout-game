@@ -9,8 +9,8 @@ class Ball {
     this.color = color;
     this.x = x;
     this.y = y;
-    this.dx = 2;
-    this.dy = -2;
+    this.dx = 5;
+    this.dy = -5;
   }
 
   move() {
@@ -234,36 +234,27 @@ class Game {
             this.ball.dy = -this.ball.dy; // bounce back
             b.status = 0; // hide the brick
             this.ball.color = this.getRandomColor();
-            switch (r) {
-              case 0:
-                this.score.update(100000);
-                break;
-              case 1:
-                this.score.update(10000);
-                break;
-              case 2:
-                this.score.update(1000);
-                break;
-              case 3:
-                this.score.update(100);
-                break;
-              default:
-                this.score.update(10);
-            }
-
+            this.score.update(10 ** (5 - r)); //different rows have different scores
             if (this.score.score >= 111110) {
-              // brickRowCount * brickColumnCount
-              // eslint-disable-next-line no-alert
+            //     // if(){
+            //     // brickRowCount * brickColumnCount
+            //     // eslint-disable-next-line no-alert
               alert('You win, congrats!!');
               document.location.reload();
             }
+            // }
           }
         }
       }
     }
   }
 
-  getRandomColor() {
+  // gameOver() {
+  //   for (let c = 0; c < this.brickColumnCount; c += 1) {
+  //     for (let r = 0; r < this.brickRowCount; r += 1) {
+  // }
+
+  getRandomColor()  {
     const letters = '0123456789ABCDEF';
     let color = '#';
     for (let i = 0; i < 6; i += 1) {
@@ -317,8 +308,8 @@ class Game {
         } else {
           this.ball.x = canvas.width / 2;
           this.ball.y = canvas.height - 30;
-          this.ball.dx = 2;
-          this.ball.dy = -2;
+          this.ball.dx = 5;
+          this.ball.dy = -5;
           this.paddle.x = (canvas.width - this.paddle.width) / 2;
         }
       }
