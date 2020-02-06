@@ -1,82 +1,87 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable no-shadow */
+import Paddle from './paddle';
+import Brick from './brick';
+import Ball from './ball';
+import Sprite from './sprite';
 
 const canvas = document.getElementById('myCanvas');
 
-class Sprite {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-  }
 
-  moveTo(x, y) {
-    this.x = x;
-    this.y = y;
-  }
+// class Sprite {
+//   constructor(x, y) {
+//     this.x = x;
+//     this.y = y;
+//   }
 
-  moveBy(dx, dy) {
-    this.x += dx;
-    this.y += dy;
-  }
-}
+//   moveTo(x, y) {
+//     this.x = x;
+//     this.y = y;
+//   }
 
-class Ball extends Sprite {
-  constructor(x, y, radius = 10, color = '#0095DD') {
-    super(x, y);
-    this.radius = radius;
-    this.color = color;
-    this.dx = 5;
-    this.dy = -5;
-  }
+//   moveBy(dx, dy) {
+//     this.x += dx;
+//     this.y += dy;
+//   }
+// }
 
-  move() {
-    this.x += this.dx;
-    this.y += this.dy;
-  }
+// class Ball extends Sprite {
+//   constructor(x, y, radius = 10, color = '#0095DD') {
+//     super(x, y);
+//     this.radius = radius;
+//     this.color = color;
+//     this.dx = 5;
+//     this.dy = -5;
+//   }
 
-  render(ctx) {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-    ctx.closePath();
-  }
-}
+//   move() {
+//     this.x += this.dx;
+//     this.y += this.dy;
+//   }
 
-class Brick extends Sprite {
-  constructor(x, y, w = 74, h = 20, color = 'blue') {
-    super(x, y);
-    this.status = 1;
-    this.color = color;
-    this.width = w;
-    this.height = h;
-  }
+//   render(ctx) {
+//     ctx.beginPath();
+//     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+//     ctx.fillStyle = this.color;
+//     ctx.fill();
+//     ctx.closePath();
+//   }
+// }
 
-  render(ctx) {
-    ctx.beginPath();
-    ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-    ctx.closePath();
-  }
-}
+// class Brick extends Sprite {
+//   constructor(x, y, w = 74, h = 20, color = 'blue') {
+//     super(x, y);
+//     this.status = 1;
+//     this.color = color;
+//     this.width = w;
+//     this.height = h;
+//   }
 
-class Paddle extends Sprite {
-  constructor(x, y, w = 75, h = 10, color = 'blue') {
-    super(x, y);
-    this.color = color;
-    this.width = w;
-    this.height = h;
-  }
+//   render(ctx) {
+//     ctx.beginPath();
+//     ctx.rect(this.x, this.y, this.width, this.height);
+//     ctx.fillStyle = this.color;
+//     ctx.fill();
+//     ctx.closePath();
+//   }
+// }
 
-  render(ctx) {
-    ctx.beginPath();
-    ctx.rect(this.x, canvas.height - this.height, this.width, this.height);
-    ctx.fillStyle = '#0095DD';
-    ctx.fill();
-    ctx.closePath();
-  }
-}
+// class Paddle extends Sprite {
+//   constructor(x, y, w = 75, h = 10, color = 'blue') {
+//     super(x, y);
+//     this.color = color;
+//     this.width = w;
+//     this.height = h;
+//   }
+
+//   render(ctx) {
+//     ctx.beginPath();
+//     ctx.rect(this.x, canvas.height - this.height, this.width, this.height);
+//     ctx.fillStyle = '#0095DD';
+//     ctx.fill();
+//     ctx.closePath();
+//   }
+// }
 
 class Background {
   constructor(color = '#2E4053') {
@@ -380,3 +385,5 @@ document.addEventListener('mousemove', (e) => {
 }, false);
 
 game.draw();
+
+export default canvas;
