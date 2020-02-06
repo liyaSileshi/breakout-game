@@ -3,12 +3,28 @@
 
 const canvas = document.getElementById('myCanvas');
 
-class Ball {
-  constructor(x, y, radius = 10, color = '#0095DD') {
-    this.radius = radius;
-    this.color = color;
+class Sprite {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
+  }
+
+  moveTo(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  moveBy(dx, dy) {
+    this.x += dx;
+    this.y += dy;
+  }
+}
+
+class Ball extends Sprite {
+  constructor(x, y, radius = 10, color = '#0095DD') {
+    super(x, y);
+    this.radius = radius;
+    this.color = color;
     this.dx = 5;
     this.dy = -5;
   }
@@ -27,10 +43,9 @@ class Ball {
   }
 }
 
-class Brick {
+class Brick extends Sprite {
   constructor(x, y, w = 74, h = 20, color = 'blue') {
-    this.x = x;
-    this.y = y;
+    super(x, y);
     this.status = 1;
     this.color = color;
     this.width = w;
@@ -46,14 +61,12 @@ class Brick {
   }
 }
 
-class Paddle {
+class Paddle extends Sprite {
   constructor(x, y, w = 75, h = 10, color = 'blue') {
-    this.x = x;
-    this.y = y;
+    super(x, y);
     this.color = color;
     this.width = w;
     this.height = h;
-    console.log(this.width);
   }
 
   render(ctx) {
@@ -79,11 +92,10 @@ class Background {
   }
 }
 
-class Score {
+class Score extends Sprite {
   constructor(x, y, color, font) {
+    super(x, y);
     this.score = 0;
-    this.x = x;
-    this.y = y;
     this.color = color;
     this.font = font;
   }
@@ -103,10 +115,9 @@ class Score {
   }
 }
 
-class Lives {
+class Lives extends Sprite {
   constructor(x, y, color, font) {
-    this.x = x;
-    this.y = y;
+    super(x, y);
     this.color = color;
     this.font = font;
     this.lives = 3;
@@ -235,8 +246,8 @@ class Game {
             b.status = 0; // hide the brick
             this.ball.color = this.getRandomColor();
             this.score.update(10 ** (5 - r)); //different rows have different scores
-            if (this.score.score >= 111110) {
-            //     // if(){
+            // if (this.score.score >= 111110) {
+            if (this.gameOver() === true) {
             //     // brickRowCount * brickColumnCount
             //     // eslint-disable-next-line no-alert
               alert('You win, congrats!!');
@@ -249,10 +260,25 @@ class Game {
     }
   }
 
-  // gameOver() {
-  //   for (let c = 0; c < this.brickColumnCount; c += 1) {
-  //     for (let r = 0; r < this.brickRowCount; r += 1) {
-  // }
+  gameOver() {
+    let sum = 0;
+    for (let c = 0; c < this.brickColumnCount; c += 1) {
+      for (let r = 0; r < this.brickRowCount; r += 1) {
+        const b = this.bricks[c][r];
+        if (b.status === 0) {
+          sum += 1;
+        }
+      }
+    }
+    if (sum === (this.brickColumnCount * this.brickRowCount)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+
 
   getRandomColor()  {
     const letters = '0123456789ABCDEF';
@@ -330,6 +356,7 @@ class Game {
     }
 
     // requestAnimationFrame(this.draw)
+    // works with closure
     requestAnimationFrame(() => {
       this.draw();
     }); // causes the draw() function to call
