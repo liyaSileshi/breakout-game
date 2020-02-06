@@ -3,6 +3,8 @@ An arcade game made in modern javascript.
 
 Live link: 🔗 https://liyasileshi.github.io/breakout-game/
 
+<img src="https://github.com/liyaSileshi/breakout-game/blob/master/images/game.png" width="500" height='auto'>
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
