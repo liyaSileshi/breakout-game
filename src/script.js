@@ -85,7 +85,6 @@ class Game {
     this.score = new Score(8, 20, '#0095DD', '16px Arial');
     this.background = new Background();
     this.paddle = new Paddle((canvas.width - 75) / 2, canvas.height - 10);
-    console.log(this.paddle.width);
 
     this.bricks = [];
     // create new brick objects
@@ -159,8 +158,6 @@ class Game {
     if (relativeX > 0 && relativeX < canvas.width) {
       // paddlewidth/2 is so that the
       // movement will be relative to the middle of the paddle
-      console.log('********');
-      console.log(this.paddle.width);
       this.paddle.x = relativeX - this.paddle.width / 2;
     }
   }
@@ -256,7 +253,7 @@ class Game {
         this.ball.color = this.getRandomColor();
       } else {
         this.lives.loseLife();
-        if (this.lives.lives === 1) {
+        if (this.lives.lives === 0) {
           // eslint-disable-next-line no-alert
           alert('GAME OVER');
           document.location.reload();
