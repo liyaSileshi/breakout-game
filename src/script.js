@@ -243,19 +243,20 @@ class Game {
 
     if (this.ball.x + this.ball.dx < this.ball.radius || this.ball.x + this.ball.dx > canvas.width - this.ball.radius) {
       this.ball.dx = -this.ball.dx;
-      // ball.move();
       this.ball.color = this.getRandomColor();
     }
     if (this.ball.y + this.ball.dy < this.ball.radius) {
       this.ball.dy = -this.ball.dy;
       this.ball.color = this.getRandomColor();
+      //************************************************************************************** */
+      //game over reload error
     } else if (this.ball.y + this.ball.dy > canvas.height - this.ball.radius) {
       if (this.ball.x > this.paddle.x && this.ball.x < this.paddle.x + this.paddle.width) {
         this.ball.dy = -this.ball.dy;
         this.ball.color = this.getRandomColor();
       } else {
         this.lives.loseLife();
-        if (this.lives.lives < 1) {
+        if (this.lives.lives === 1) {
           // eslint-disable-next-line no-alert
           alert('GAME OVER');
           document.location.reload();
